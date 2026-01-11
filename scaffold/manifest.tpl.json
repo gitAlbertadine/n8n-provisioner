@@ -1,0 +1,12 @@
+{
+  "app_id": "{{APP_ID}}",
+  "domain": "https://{{N8N_HOST}}",
+  "install_path": "/opt/n8n/{{APP_ID}}",
+  "stack": "n8n-single-node",
+  "services": ["n8n", "postgres"],
+  "installed_at": "{{TIMESTAMP}}",
+  "ports": {
+    "n8n": {{PORT}}
+  }
+}
+
