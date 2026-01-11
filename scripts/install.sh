@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+# Directory of the script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$SCRIPT_DIR/.."
+
 # Usage: ./install.sh <APP_ID> <DOMAIN> <PORT>
 APP_ID="$1"
 DOMAIN="$2"
@@ -31,10 +35,10 @@ sed \
   -e "s|{{N8N_BASIC_AUTH_USER}}|admin|g" \
   -e "s|{{N8N_BASIC_AUTH_PASSWORD}}|$ADMIN_PASSWORD|g" \
   -e "s|{{N8N_ENCRYPTION_KEY}}|$ENCRYPTION_KEY|g" \
-  ../scaffold/env.tpl > "$APP_DIR/.env"
+  "$REPO_ROOT/scaffold/env.tpl" > "$APP_DIR/.env"
 
 # Render docker-compose
-sed "s|{{PORT}}|$PORT|g" ../scaffold/docker-compose.yml.tpl \
+sed "s|{{PORT}}|$PORT|g" "$REPO_ROOT/scaffold/docker-compose.yml.tpl" \
   > "$APP_DIR/docker-compose.yml"
 
 # Deploy
@@ -48,7 +52,7 @@ sed \
   -e "s|{{N8N_HOST}}|$DOMAIN|g" \
   -e "s|{{PORT}}|$PORT|g" \
   -e "s|{{TIMESTAMP}}|$TIMESTAMP|g" \
-  ../scaffold/manifest.tpl.json > "$APP_DIR/manifest.json"
+  "$REPO_ROOT/scaffold/manifest.tpl.json" > "$APP_DIR/manifest.json"
 
 echo "n8n instance '$APP_ID' deployed at https://$DOMAIN on port $PORT"
 
